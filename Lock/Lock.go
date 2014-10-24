@@ -1,5 +1,5 @@
-package Lock
 //version 0.1
+package Lock
 type KEY struct{
 	key chan int
 	function func()interface{} 
