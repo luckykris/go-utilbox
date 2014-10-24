@@ -6,7 +6,9 @@ import (
     "fmt"
 )
 
-
+// Config Area , for example
+// [abc]  -->this is config area
+// a=1 -->this is config row
 type CONFIG struct {
 	AREA string
 	CONF map[string]CONFIGROW
@@ -15,7 +17,7 @@ type CONFIGROW struct {
 	TYPE string
 	DEFAULT interface{}
 }
-
+// config object ,to init configuration file
 var CF *conf.ConfigFile
 func LoadConf(path string,allcf ...CONFIG){
 	cf, err := conf.ReadConfigFile(path)
@@ -29,7 +31,7 @@ func LoadConf(path string,allcf ...CONFIG){
     	}
     }
 }
-
+// read row conf
 func _RowConf(an string,cn string,cr CONFIGROW){
 	switch cr.TYPE {
 	case "int":
@@ -41,15 +43,15 @@ func _RowConf(an string,cn string,cr CONFIGROW){
 	}
 }
 
-
+// error handel of row conf
 func __RowConfErrorHandle(r interface{},err error,an string,cn string,cr CONFIGROW){
 	if err==nil{
-      	Env.Global(an+"/"+cn,r)
+      		Env.Global(an+"/"+cn,r)
    	}else{
    		Env.Global(an+"/"+cn,cr.DEFAULT)
    	}
 }
-	
+// area config analysis
 func _AreaConf(area CONFIG){
 	for cn,cr:= range area.CONF{
 		_RowConf(area.AREA,cn,cr)
