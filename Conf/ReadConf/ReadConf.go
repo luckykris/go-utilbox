@@ -15,6 +15,7 @@ type CONFIG struct {
 }
 type CONFIGROW struct {
 	TYPE string
+	EXIT bool
 	DEFAULT interface{}
 }
 // config object ,to init configuration file
@@ -48,6 +49,10 @@ func __RowConfErrorHandle(r interface{},err error,an string,cn string,cr CONFIGR
 	if err==nil{
       		Env.Global(an+"/"+cn,r)
    	}else{
+   		if cr.EXIT==true{
+   			fmt.Printf("configuration Error: %s->%s is not be specific ",an,cn)
+   			os.Exit(-1)
+   		}
    		Env.Global(an+"/"+cn,cr.DEFAULT)
    	}
 }
