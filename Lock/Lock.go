@@ -1,20 +1,23 @@
-//version 0.1
+//version 0.2
 package Lock
 type KEY struct{
 	key chan int
-	function func()interface{} 
 	}
 // Type of Key ,contain a function to do when get key
-func NewLock(ifunc func()interface{})*KEY{
+func New()*KEY{
 	ikey:=make(chan int ,1)
 	ikey <- 0
-	return &KEY{key:ikey,function:ifunc}
+	return &KEY{key:ikey}
 }
 //Create a NewLock
-func (self *KEY)GetKey()interface{}{
+func (self *KEY)Get(){
 	<- self.key
-	tmp:=self.function()
-    self.key <- 0
-    return tmp
+	return 
 }
-//Try to get a key,when other one has got it, it will block your program,until someone release the key, and return a value that your function return which youu define in function of 'NewLock'
+//Release a Lock
+func (self *KEY)Release(){
+	self.key <- 0
+	return
+}
+
+
