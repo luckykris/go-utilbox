@@ -1,3 +1,5 @@
+//version 1.0
+//last modify:2015.06.27
 package SignalHandle
 import (
     "os"
@@ -7,11 +9,11 @@ import (
 )
 
 
-func StartSignalHandle(signaltype string ,function func()){
-	go SignalHandle(signaltype,function)
+func StartSignalHandle(signaltype string ,function func(),once bool){
+	go SignalHandle(signaltype,function,once)
 }
 
-func SignalHandle(signaltype string ,function func()){
+func SignalHandle(signaltype string ,function func(),once bool){
 	runtime.Gosched()
 	for {
 		ch := make(chan os.Signal)
@@ -20,6 +22,9 @@ func SignalHandle(signaltype string ,function func()){
  		v:=sig.String()
  		if v==signaltype{
  				function()
+				if once{
+					return
+				}
  			}
 		}
 }
